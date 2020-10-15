@@ -75,7 +75,24 @@ client.on('message', (msg) => {
 
 
   }else if(command === 'get'){
-    console.log(args)
+    const userId = args.replace(/[\\<>@#&!]/g, "")
+
+    db.collection('profile').doc(userId).get()
+      .then((doc) => {
+        if(doc.exists){
+
+          const { name, bio, link } = doc.data()
+
+          msg.reply(`\n Name: ${name} \n Bio: ${bio} \n Link: ${link}`)
+
+        }else{
+          msg.reply('User have not yet added their profile information')
+        }
+      })
+      .catch(() => {
+        msg.reply('Sorry some error occured, please try again later')
+      })
+
   } 
 
 })
