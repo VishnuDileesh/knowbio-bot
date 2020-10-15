@@ -38,16 +38,17 @@ client.on('message', (msg) => {
 
 
   if(command === undefined || command === 'help'){
-    msg.reply(':robot: Am knowbio bot :sunglasses: \n I help everyone to get to know each other easily and share their bio information :handshake: \n Commands: \n !knowbio add name <name> \n !knowbio add bio <bio> \n !knowbio add link <link> \n !knowbio @username (for getting profile bio information)')
+    msg.reply(':robot: Am knowbio bot :sunglasses: \n I help everyone to get to know each other easily and share their bio information :handshake: \n Commands: \n !knowbio add name <name> \n !knowbio add bio <bio> \n !knowbio add link <link> \n !knowbio get @username (for getting profile bio information)')
   }else if(command === 'add'){
 
-    db.collection('profile').doc(msg.author.username).set({ username: msg.author.username }, { merge: true })
+
+    db.collection('profile').doc(msg.author.id).set({ userId: msg.author.id }, { merge: true })
 
 
     if(args === 'name'){
       const profileName = commands.slice(3).join(' ')
 
-      db.collection('profile').doc(msg.author.username).set({
+      db.collection('profile').doc(msg.author.id).set({
         name: profileName
       }, { merge: true })
 
@@ -57,7 +58,7 @@ client.on('message', (msg) => {
     if(args === 'bio'){
       profileBio = commands.slice(3).join(' ')
 
-      db.collection('profile').doc(msg.author.username).set({
+      db.collection('profile').doc(msg.author.id).set({
         bio: profileBio
       }, { merge: true })
 
@@ -66,13 +67,15 @@ client.on('message', (msg) => {
     if(args === 'link'){
       profileLink = commands.slice(3).join(' ')
 
-      db.collection('profile').doc(msg.author.username).set({
+      db.collection('profile').doc(msg.author.id).set({
         link: profileLink
       }, { merge: true })
 
     }
 
 
+  }else if(command === 'get'){
+    console.log(args)
   } 
 
 })
